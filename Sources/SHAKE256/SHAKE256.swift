@@ -100,7 +100,7 @@ public struct SHAKE256 {
     
     private mutating func xorToState<Input>(_ input: Input) where Input: DataProtocol {
         var input = input[...]
-        for i in 0..<(Self.bitRate / UInt64.bitWidth) {
+        for i in state.indices.prefix(Self.bitRate / UInt64.bitWidth) {
             state[i] ^= UInt64(littleEndianBytes: input.prefix(UInt64.bitWidth / 8))
             input = input.dropFirst(UInt64.bitWidth / 8)
         }

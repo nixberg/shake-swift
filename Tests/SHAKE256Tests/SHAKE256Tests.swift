@@ -36,7 +36,6 @@ final class SHAKE256Tests: XCTestCase {
             var sponge = SHAKE256()
             sponge.absorb(message.prefix(firstPartByteCount))
             sponge.absorb(message.suffix(message.count - firstPartByteCount))
-            
             let result = sponge.squeeze()
             
             XCTAssertEqual(result, output)
@@ -85,7 +84,6 @@ final class SHAKE256Tests: XCTestCase {
             
             var sponge = SHAKE256()
             sponge.absorb(message)
-            
             let a = sponge.squeeze(count: Int.random(in: 0..<output.count))
             let b = sponge.squeeze(count: output.count - a.count)
             
