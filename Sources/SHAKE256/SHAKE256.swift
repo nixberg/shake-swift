@@ -43,11 +43,6 @@ public struct SHAKE256 {
         }
     }
     
-    public mutating func squeeze<Output>(to output: inout Output)
-    where Output: MutableDataProtocol {
-        self.squeeze(count: Self.defaultOutputByteCount, to: &output)
-    }
-    
     public mutating func squeeze<Output>(count: Int, to output: inout Output)
     where Output: MutableDataProtocol {
         precondition(count >= 0)
@@ -87,8 +82,9 @@ public struct SHAKE256 {
         }
     }
     
-    public mutating func squeeze() -> [UInt8] {
-        self.squeeze(count: Self.defaultOutputByteCount)
+    public mutating func squeeze<Output>(to output: inout Output)
+    where Output: MutableDataProtocol {
+        self.squeeze(count: Self.defaultOutputByteCount, to: &output)
     }
     
     public mutating func squeeze(count: Int) -> [UInt8] {
@@ -96,6 +92,10 @@ public struct SHAKE256 {
         output.reserveCapacity(count)
         self.squeeze(count: count, to: &output)
         return output
+    }
+    
+    public mutating func squeeze() -> [UInt8] {
+        self.squeeze(count: Self.defaultOutputByteCount)
     }
     
     private mutating func xorToState<Input>(_ input: Input) where Input: DataProtocol {
