@@ -1,5 +1,5 @@
-import XCTest
 import SHAKE256
+import XCTest
 
 fileprivate struct Vector: Decodable {
     let message: String
@@ -88,6 +88,29 @@ final class SHAKE256Tests: XCTestCase {
             let b = sponge.squeeze(count: output.count - a.count)
             
             XCTAssertEqual(a + b, output)
+        }
+    }
+    
+    func testAbsorbPerformance() {
+        var sponge = SHAKE256()
+        let message = [UInt8](repeating: 0, count: 1024)
+        
+        measure {
+            for _ in 0..<128 {
+                sponge.absorb(message)
+            }
+        }
+    }
+    
+    func testSqueezePerformance() {
+        var sponge = SHAKE256()
+        var output = [UInt8]()
+        
+        measure {
+            for _ in 0..<128 {
+                output.removeAll(keepingCapacity: true)
+                sponge.squeeze(to: &output, count: 1024)
+            }
         }
     }
 }

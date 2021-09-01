@@ -1,7 +1,5 @@
-import Foundation
-
 public struct SHAKE256 {
-    public static let defaultOutputByteCount = 32
+    public static let defaultDigestByteCount = 32
     
     private static let bitRate = 1088
     private static let byteRate = bitRate / 8
@@ -18,7 +16,8 @@ public struct SHAKE256 {
         bufferView = buffer[...]
     }
     
-    public mutating func absorb<Input>(_ input: Input) where Input: DataProtocol {
+    public mutating func absorb<Input>(_ input: Input)
+    where Input: Collection, Input.Element == UInt8 {
         precondition(isAbsorbing, "SHAKE256: absorb(_:) called after squeeze.")
         
         var input = input[...]
@@ -43,8 +42,10 @@ public struct SHAKE256 {
         }
     }
     
-    public mutating func squeeze<Output>(count: Int, to output: inout Output)
-    where Output: MutableDataProtocol {
+    public mutating func squeeze<Output>(
+        to output: inout Output,
+        count: Int = Self.defaultDigestByteCount
+    ) where Output: RangeReplaceableCollection, Output.Element == UInt8 {
         precondition(count >= 0)
         
         if isAbsorbing {
@@ -82,23 +83,15 @@ public struct SHAKE256 {
         }
     }
     
-    public mutating func squeeze<Output>(to output: inout Output)
-    where Output: MutableDataProtocol {
-        self.squeeze(count: Self.defaultOutputByteCount, to: &output)
-    }
-    
-    public mutating func squeeze(count: Int) -> [UInt8] {
+    public mutating func squeeze(count: Int = Self.defaultDigestByteCount) -> [UInt8] {
         var output = [UInt8]()
         output.reserveCapacity(count)
-        self.squeeze(count: count, to: &output)
+        self.squeeze(to: &output, count: count)
         return output
     }
     
-    public mutating func squeeze() -> [UInt8] {
-        self.squeeze(count: Self.defaultOutputByteCount)
-    }
-    
-    private mutating func xorToState<Input>(_ input: Input) where Input: DataProtocol {
+    private mutating func xorToState<Input>(_ input: Input)
+    where Input: Collection, Input.Element == UInt8 {
         var input = input[...]
         for i in state.indices.prefix(Self.bitRate / UInt64.bitWidth) {
             state[i] ^= UInt64(littleEndianBytes: input.prefix(UInt64.bitWidth / 8))
@@ -298,7 +291,7 @@ public struct SHAKE256 {
 
 fileprivate extension UInt64 {
     @inline(__always)
-    init<D>(littleEndianBytes bytes: D) where D: DataProtocol {
+    init<D>(littleEndianBytes bytes: D) where D: Collection, D.Element == UInt8 {
         assert(bytes.count == Self.bitWidth / 8)
         self = bytes.reversed().reduce(0, { $0 &<< 8 | Self($1) })
     }
@@ -309,7 +302,26 @@ fileprivate extension UInt64 {
     }
 }
 
-//func printUnrolledRound() {
+//struct State {
+//    var a: SIMD16<UInt64>
+//    var b: SIMD8<UInt64>
+//    var c: UInt64
+//}
+//
+//public func printUnrolledRound() {
+//    func state(_ index: Int) -> String {
+//        switch index {
+//        case 0..<16:
+//            return "state.a.\(index)"
+//        case 16..<24:
+//            return "state.b.\(index - 16)"
+//        case 25:
+//            return "state.c"
+//        default:
+//            fatalError(index.description)
+//        }
+//    }
+//
 //    let bc = ["a", "b", "c", "d", "e"]
 //
 //    let pi = [
@@ -328,8 +340,8 @@ fileprivate extension UInt64 {
 //    print("")
 //
 //    for i in 0..<5 {
-//        print("let \(bc[i]) = state[\(i)] ^ state[\(i + 5)] ^ " +
-//                "state[\(i + 10)] ^ state[\(i + 15)] ^ state[\(i + 20)]")
+//        print("let \(bc[i]) = \(state(i)) ^ \(state(i + 5)) ^ " +
+//                "\(state(i + 10)) ^ \(state(i + 15)) ^ \(state(i + 20))")
 //    }
 //
 //    print("")
@@ -337,7 +349,7 @@ fileprivate extension UInt64 {
 //    for i in 0..<5 {
 //        print("let temp = \(bc[(i + 4) % 5]) ^ \(bc[(i + 1) % 5]).rotated(left: 1)")
 //        for j in stride(from: 0, to: 25, by: 5) {
-//            print("state[\(j + i)] ^= temp")
+//            print("\(state(j + i)) ^= temp")
 //        }
 //    }
 //
@@ -347,8 +359,8 @@ fileprivate extension UInt64 {
 //
 //    print("var last = state[1]")
 //    for i in 0..<24 {
-//        print("\(bc[0]) = state[\(pi[i])]")
-//        print("state[\(pi[i])] = last.rotated(left: \(rho[i]))")
+//        print("\(bc[0]) = \(state(pi[i]))")
+//        print("\(state(pi[i])) = last.rotated(left: \(rho[i]))")
 //        print("last = \(bc[0])")
 //    }
 //
@@ -358,10 +370,10 @@ fileprivate extension UInt64 {
 //
 //    for j in stride(from: 0, to: 25, by: 5) {
 //        for i in 0..<5 {
-//            print("\(bc[i]) = state[\(j + i)]")
+//            print("\(bc[i]) = \(state(j + i))")
 //        }
 //        for i in 0..<5 {
-//            print("state[\(j + i)] ^= ~\(bc[(i + 1) % 5]) & \(bc[(i + 2) % 5])")
+//            print("\(state(j + i)) ^= ~\(bc[(i + 1) % 5]) & \(bc[(i + 2) % 5])")
 //        }
 //    }
 //
@@ -369,5 +381,5 @@ fileprivate extension UInt64 {
 //    print("// Iota:")
 //    print("")
 //
-//    print("state[0] ^= roundConstant")
+//    print("\(state(0)) ^= roundConstant")
 //}
