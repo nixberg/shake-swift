@@ -3,8 +3,8 @@ import SHAKE256
 import XCTest
 
 fileprivate struct Vector: Decodable {
-    let message: HexString
-    let output: HexString
+    @HexString var message: [UInt8]
+    @HexString var output: [UInt8]
 }
 
 final class SHAKE256Tests: XCTestCase {
@@ -14,10 +14,10 @@ final class SHAKE256Tests: XCTestCase {
         
         for vector in vectors {
             var sponge = SHAKE256()
-            sponge.absorb(vector.message.wrappedValue)
+            sponge.absorb(vector.message)
             let result = sponge.squeeze()
             
-            XCTAssertEqual(result, vector.output.wrappedValue)
+            XCTAssertEqual(result, vector.output)
         }
     }
     
@@ -26,16 +26,14 @@ final class SHAKE256Tests: XCTestCase {
         let vectors = try JSONDecoder().decode([Vector].self, from: try Data(contentsOf: url))
         
         for vector in vectors {
-            let message = vector.message.wrappedValue
-            
-            let firstPartByteCount = Int.random(in: 0...message.count)
+            let firstPartByteCount = Int.random(in: 0...vector.message.count)
             
             var sponge = SHAKE256()
-            sponge.absorb(message.prefix(firstPartByteCount))
-            sponge.absorb(message.suffix(message.count - firstPartByteCount))
+            sponge.absorb(vector.message.prefix(firstPartByteCount))
+            sponge.absorb(vector.message.suffix(vector.message.count - firstPartByteCount))
             let result = sponge.squeeze()
             
-            XCTAssertEqual(result, vector.output.wrappedValue)
+            XCTAssertEqual(result, vector.output)
         }
     }
     
@@ -45,10 +43,10 @@ final class SHAKE256Tests: XCTestCase {
         
         for vector in vectors {
             var sponge = SHAKE256()
-            sponge.absorb(vector.message.wrappedValue)
+            sponge.absorb(vector.message)
             let result = sponge.squeeze()
             
-            XCTAssertEqual(result, vector.output.wrappedValue)
+            XCTAssertEqual(result, vector.output)
         }
     }
     
@@ -58,10 +56,10 @@ final class SHAKE256Tests: XCTestCase {
         
         for vector in vectors {
             var sponge = SHAKE256()
-            sponge.absorb(vector.message.wrappedValue)
-            let result = sponge.squeeze(count: vector.output.wrappedValue.count)
+            sponge.absorb(vector.message)
+            let result = sponge.squeeze(count: vector.output.count)
             
-            XCTAssertEqual(result, vector.output.wrappedValue)
+            XCTAssertEqual(result, vector.output)
         }
     }
     
@@ -70,14 +68,12 @@ final class SHAKE256Tests: XCTestCase {
         let vectors = try JSONDecoder().decode([Vector].self, from: try Data(contentsOf: url))
         
         for vector in vectors {
-            let output = vector.output.wrappedValue
-            
             var sponge = SHAKE256()
-            sponge.absorb(vector.message.wrappedValue)
-            let a = sponge.squeeze(count: Int.random(in: 0...output.count))
-            let b = sponge.squeeze(count: output.count - a.count)
+            sponge.absorb(vector.message)
+            let a = sponge.squeeze(count: Int.random(in: 0...vector.output.count))
+            let b = sponge.squeeze(count: vector.output.count - a.count)
             
-            XCTAssertEqual(a + b, output)
+            XCTAssertEqual(a + b, vector.output)
         }
     }
     
