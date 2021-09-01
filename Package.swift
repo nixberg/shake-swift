@@ -9,12 +9,18 @@ let package = Package(
             name: "SHAKE256",
             targets: ["SHAKE256"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/nixberg/hexstring-swift", from: "0.2.0"),
+    ],
     targets: [
         .target(
             name: "SHAKE256"),
         .testTarget(
             name: "SHAKE256Tests",
-            dependencies: ["SHAKE256"],
+            dependencies: [
+                .product(name: "HexString", package: "hexstring-swift"),
+                "SHAKE256"
+            ],
             resources: [
                 .copy("LongMessages.json"),
                 .copy("ShortMessages.json"),

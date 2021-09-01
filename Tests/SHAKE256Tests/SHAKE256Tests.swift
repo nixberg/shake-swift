@@ -1,9 +1,10 @@
+import HexString
 import SHAKE256
 import XCTest
 
 fileprivate struct Vector: Decodable {
-    let message: String
-    let output: String
+    let message: HexString
+    let output: HexString
 }
 
 final class SHAKE256Tests: XCTestCase {
@@ -12,14 +13,11 @@ final class SHAKE256Tests: XCTestCase {
         let vectors = try JSONDecoder().decode([Vector].self, from: try Data(contentsOf: url))
         
         for vector in vectors {
-            let message = Array(hex: vector.message)!
-            let output = Array(hex: vector.output)!
-            
             var sponge = SHAKE256()
-            sponge.absorb(message)
+            sponge.absorb(vector.message.wrappedValue)
             let result = sponge.squeeze()
             
-            XCTAssertEqual(result, output)
+            XCTAssertEqual(result, vector.output.wrappedValue)
         }
     }
     
@@ -28,8 +26,7 @@ final class SHAKE256Tests: XCTestCase {
         let vectors = try JSONDecoder().decode([Vector].self, from: try Data(contentsOf: url))
         
         for vector in vectors {
-            let message = Array(hex: vector.message)!
-            let output = Array(hex: vector.output)!
+            let message = vector.message.wrappedValue
             
             let firstPartByteCount = Int.random(in: 0...message.count)
             
@@ -38,7 +35,7 @@ final class SHAKE256Tests: XCTestCase {
             sponge.absorb(message.suffix(message.count - firstPartByteCount))
             let result = sponge.squeeze()
             
-            XCTAssertEqual(result, output)
+            XCTAssertEqual(result, vector.output.wrappedValue)
         }
     }
     
@@ -47,14 +44,11 @@ final class SHAKE256Tests: XCTestCase {
         let vectors = try JSONDecoder().decode([Vector].self, from: try Data(contentsOf: url))
         
         for vector in vectors {
-            let message = Array(hex: vector.message)!
-            let output = Array(hex: vector.output)!
-            
             var sponge = SHAKE256()
-            sponge.absorb(message)
+            sponge.absorb(vector.message.wrappedValue)
             let result = sponge.squeeze()
             
-            XCTAssertEqual(result, output)
+            XCTAssertEqual(result, vector.output.wrappedValue)
         }
     }
     
@@ -63,14 +57,11 @@ final class SHAKE256Tests: XCTestCase {
         let vectors = try JSONDecoder().decode([Vector].self, from: try Data(contentsOf: url))
         
         for vector in vectors {
-            let message = Array(hex: vector.message)!
-            let output = Array(hex: vector.output)!
-            
             var sponge = SHAKE256()
-            sponge.absorb(message)
-            let result = sponge.squeeze(count: output.count)
+            sponge.absorb(vector.message.wrappedValue)
+            let result = sponge.squeeze(count: vector.output.wrappedValue.count)
             
-            XCTAssertEqual(result, output)
+            XCTAssertEqual(result, vector.output.wrappedValue)
         }
     }
     
@@ -79,11 +70,10 @@ final class SHAKE256Tests: XCTestCase {
         let vectors = try JSONDecoder().decode([Vector].self, from: try Data(contentsOf: url))
         
         for vector in vectors {
-            let message = Array(hex: vector.message)!
-            let output = Array(hex: vector.output)!
+            let output = vector.output.wrappedValue
             
             var sponge = SHAKE256()
-            sponge.absorb(message)
+            sponge.absorb(vector.message.wrappedValue)
             let a = sponge.squeeze(count: Int.random(in: 0...output.count))
             let b = sponge.squeeze(count: output.count - a.count)
             
@@ -111,26 +101,6 @@ final class SHAKE256Tests: XCTestCase {
                 output.removeAll(keepingCapacity: true)
                 sponge.squeeze(to: &output, count: 1024)
             }
-        }
-    }
-}
-
-fileprivate extension Array where Element == UInt8 {
-    init?(hex: String) {
-        guard hex.count.isMultiple(of: 2) else {
-            return nil
-        }
-        
-        var hex = hex[...]
-        let expectedByteCount = hex.count / 2
-        
-        self = stride(from: 0, to: hex.count, by: 2).compactMap { _ in
-            defer { hex = hex.dropFirst(2) }
-            return UInt8(hex.prefix(2), radix: 16)
-        }
-        
-        guard count == expectedByteCount else {
-            return nil
         }
     }
 }
