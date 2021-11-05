@@ -2,12 +2,30 @@
   "object": {
     "pins": [
       {
+        "package": "crypto-traits-swift",
+        "repositoryURL": "https://github.com/nixberg/crypto-traits-swift",
+        "state": {
+          "branch": null,
+          "revision": "edbb488fbe7a09572e889e026a5aa07e0feb1198",
+          "version": "0.2.1"
+        }
+      },
+      {
+        "package": "endianbytes-swift",
+        "repositoryURL": "https://github.com/nixberg/endianbytes-swift",
+        "state": {
+          "branch": null,
+          "revision": "c2070dbf074c22e147d074e33a289ba228db0a28",
+          "version": "0.3.0"
+        }
+      },
+      {
         "package": "hexstring-swift",
         "repositoryURL": "https://github.com/nixberg/hexstring-swift",
         "state": {
           "branch": null,
-          "revision": "6175ff0de6e8181637188f078571268b22fd386e",
-          "version": "0.2.0"
+          "revision": "c501ec4e65375e9ea6893997ef3af959ccd84a11",
+          "version": "0.4.0"
         }
       },
       {
@@ -15,8 +33,17 @@
         "repositoryURL": "https://github.com/apple/swift-algorithms",
         "state": {
           "branch": null,
-          "revision": "2327673b0e9c7e90e6b1826376526ec3627210e4",
-          "version": "0.2.1"
+          "revision": "b14b7f4c528c942f121c8b860b9410b2bf57825e",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "swift-collections",
+        "repositoryURL": "https://github.com/apple/swift-collections",
+        "state": {
+          "branch": null,
+          "revision": "2d33a0ea89c961dcb2b3da2157963d9c0370347e",
+          "version": "1.0.1"
         }
       },
       {
@@ -24,8 +51,8 @@
         "repositoryURL": "https://github.com/apple/swift-numerics",
         "state": {
           "branch": null,
-          "revision": "6583ac70c326c3ee080c1d42d9ca3361dca816cd",
-          "version": "0.1.0"
+          "revision": "0a23770641f65a4de61daf5425a37ae32a3fd00d",
+          "version": "1.0.1"
         }
       }
     ]
