@@ -1,4 +1,5 @@
-![Swift](https://github.com/nixberg/shake256-swift/workflows/Swift/badge.svg)
+[![Swift](https://github.com/nixberg/shake-swift/actions/workflows/swift.yml/badge.svg)](
+https://github.com/nixberg/shake-swift/actions/workflows/swift.yml)
 
 # shake-swift
 
