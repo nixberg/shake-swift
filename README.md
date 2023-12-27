@@ -6,5 +6,9 @@ https://github.com/nixberg/shake-swift/actions/workflows/swift.yaml)
 > [!CAUTION]
 > Experimental.
 
-Swift implementation  of [`SHAKE128/256`](https://keccak.team/keccak.html), 
-[`TurboSHAKE128/256`](https://www.ietf.org/archive/id/draft-irtf-cfrg-kangarootwelve-12.html).
+Swift implementation  of the
+[`SHAKE128`](https://keccak.team/keccak.html),
+[`SHAKE256`](https://keccak.team/keccak.html), and
+[`TurboSHAKE128`](https://www.ietf.org/archive/id/draft-irtf-cfrg-kangarootwelve-12.html),
+[`TurboSHAKE256`](https://www.ietf.org/archive/id/draft-irtf-cfrg-kangarootwelve-12.html)
+hash functions.
