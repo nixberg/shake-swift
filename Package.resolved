@@ -1,61 +1,59 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "crypto-traits-swift",
-        "repositoryURL": "https://github.com/nixberg/crypto-traits-swift",
-        "state": {
-          "branch": null,
-          "revision": "edbb488fbe7a09572e889e026a5aa07e0feb1198",
-          "version": "0.2.1"
-        }
-      },
-      {
-        "package": "endianbytes-swift",
-        "repositoryURL": "https://github.com/nixberg/endianbytes-swift",
-        "state": {
-          "branch": null,
-          "revision": "c2070dbf074c22e147d074e33a289ba228db0a28",
-          "version": "0.3.0"
-        }
-      },
-      {
-        "package": "hexstring-swift",
-        "repositoryURL": "https://github.com/nixberg/hexstring-swift",
-        "state": {
-          "branch": null,
-          "revision": "c501ec4e65375e9ea6893997ef3af959ccd84a11",
-          "version": "0.4.0"
-        }
-      },
-      {
-        "package": "swift-algorithms",
-        "repositoryURL": "https://github.com/apple/swift-algorithms",
-        "state": {
-          "branch": null,
-          "revision": "b14b7f4c528c942f121c8b860b9410b2bf57825e",
-          "version": "1.0.0"
-        }
-      },
-      {
-        "package": "swift-collections",
-        "repositoryURL": "https://github.com/apple/swift-collections",
-        "state": {
-          "branch": null,
-          "revision": "2d33a0ea89c961dcb2b3da2157963d9c0370347e",
-          "version": "1.0.1"
-        }
-      },
-      {
-        "package": "swift-numerics",
-        "repositoryURL": "https://github.com/apple/swift-numerics",
-        "state": {
-          "branch": null,
-          "revision": "0a23770641f65a4de61daf5425a37ae32a3fd00d",
-          "version": "1.0.1"
-        }
+  "pins" : [
+    {
+      "identity" : "blobby-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nixberg/blobby-swift",
+      "state" : {
+        "revision" : "05963eb236191a4318cd35ae112d21db895aafa8",
+        "version" : "0.2.0"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "keccak-p-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nixberg/keccak-p-swift",
+      "state" : {
+        "branch" : "main",
+        "revision" : "b2428b3514dc32683df7c9a5051725fb844ac233"
+      }
+    },
+    {
+      "identity" : "swift-algorithms",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-algorithms",
+      "state" : {
+        "revision" : "f6919dfc309e7f1b56224378b11e28bab5bccc42",
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections",
+      "state" : {
+        "revision" : "d029d9d39c87bed85b1c50adee7c41795261a192",
+        "version" : "1.0.6"
+      }
+    },
+    {
+      "identity" : "swift-numerics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-numerics.git",
+      "state" : {
+        "revision" : "0a5bc04095a675662cf24757cc0640aa2204253b",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "tuple-sequences-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nixberg/tuple-sequences-swift",
+      "state" : {
+        "revision" : "437df02bc51c76bdbe400767e24d9ae3bad7207a",
+        "version" : "1.1.0"
+      }
+    }
+  ],
+  "version" : 2
 }

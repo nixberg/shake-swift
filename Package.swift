@@ -1,40 +1,40 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.9
 
 import PackageDescription
 
 let package = Package(
-    name: "shake256-swift",
+    name: "shake-swift",
     products: [
         .library(
-            name: "SHAKE256",
-            targets: ["SHAKE256"]),
+            name: "SHAKE",
+            targets: ["SHAKE"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
-        .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
-        .package(url: "https://github.com/nixberg/crypto-traits-swift", from: "0.2.1"),
-        .package(url: "https://github.com/nixberg/endianbytes-swift", from: "0.3.0"),
-        .package(url: "https://github.com/nixberg/hexstring-swift", from: "0.4.0"),
+        .package(
+            url: "https://github.com/apple/swift-algorithms",
+            .upToNextMajor(from: "1.0.0")),
+        .package(
+            url: "https://github.com/nixberg/blobby-swift",
+            .upToNextMinor(from: "0.2.0")),
+        .package(
+            url: "https://github.com/nixberg/keccak-p-swift",
+            branch: "main"),
     ],
     targets: [
         .target(
-            name: "SHAKE256",
+            name: "SHAKE",
             dependencies: [
-                .product(name: "Algorithms", package: "swift-algorithms"),
-                .product(name: "Collections", package: "swift-collections"),
-                .product(name: "Duplex", package: "crypto-traits-swift"),
-                .product(name: "EndianBytes", package: "endianbytes-swift"),
+                .product(name: "KeccakP", package: "keccak-p-swift"),
             ]),
         .testTarget(
-            name: "SHAKE256Tests",
+            name: "SHAKETests",
             dependencies: [
-                .product(name: "HexString", package: "hexstring-swift"),
-                "SHAKE256"
+                .product(name: "Algorithms", package: "swift-algorithms"),
+                .product(name: "Blobby", package: "blobby-swift"),
+                "SHAKE",
             ],
             resources: [
-                .copy("LongMessages.json"),
-                .copy("ShortMessages.json"),
-                .copy("VariableOutput.json"),
+                .process("Blobs"),
             ]),
     ]
 )
