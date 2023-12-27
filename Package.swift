@@ -12,13 +12,13 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/apple/swift-algorithms",
-            .upToNextMajor(from: "1.0.0")),
+            .upToNextMajor(from: "1.2.0")),
         .package(
             url: "https://github.com/nixberg/blobby-swift",
             .upToNextMinor(from: "0.2.0")),
         .package(
             url: "https://github.com/nixberg/keccak-p-swift",
-            branch: "main"),
+            .upToNextMinor(from: "0.1.0")),
     ],
     targets: [
         .target(

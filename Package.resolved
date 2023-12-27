@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nixberg/keccak-p-swift",
       "state" : {
-        "branch" : "main",
-        "revision" : "b2428b3514dc32683df7c9a5051725fb844ac233"
+        "revision" : "e7b22cc8c24632a353c4712caf2d976e548b5c62",
+        "version" : "0.1.0"
       }
     },
     {
